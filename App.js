@@ -3,12 +3,6 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { StatusBar } from 'expo-status-bar';
-import { SearchBar } from 'react-native-elements';
-import { StyleSheet, Text, View, SafeAreaView, Button, TouchableWithoutFeedback, TextInput, ScrollView,
-         TouchableOpacity, Image} from 'react-native';
-
-import {TextStyles, ContainerStyles} from './app/Styles.js'
 
 import {WelcomeScreen} from './app/Screens/WelcomeScreen'
 import {LoginScreen} from './app/Screens/LoginScreen'
@@ -26,6 +20,8 @@ import {ClubScreen} from './app/Screens/ClubScreen'
 import {ClubCreationScreen} from './app/Screens/ClubCreationScreen'
 import {PersonScreen} from './app/Screens/PersonScreen'
 import {MembersScreen} from './app/Screens/MembersScreen'
+
+import {firebase} from './app/FirebaseConfig'
 
 const Stack = createStackNavigator();
 
