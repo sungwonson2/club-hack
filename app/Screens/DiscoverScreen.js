@@ -11,7 +11,6 @@ export const DiscoverScreen = ({ navigation, route }) => {
       <SearchBar     
       lightTheme
       containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
-      placeholderTextColor={'#g5g5g5'}
       placeholder={'Type Here...'}/>
       <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
         <Text>Alpha Fund</Text>

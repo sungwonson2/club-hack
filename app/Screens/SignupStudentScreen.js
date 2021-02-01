@@ -9,16 +9,17 @@ export const SignupStudentScreen = ({ navigation, route }) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confirmPassword, setConfirmPassword] = useState('')
     const [interest, setInterest] = useState('')
     const [funFact, setFunFact] = useState('')
 
     // const profileRef = firebase.firestore().collection('profiles')
 
     const onRegisterPress = () => {
-      // if (password !== confirmPassword) {
-      //   alert("Passwords don't match.")
-      //   return
-      // }
+      if (password !== confirmPassword) {
+        alert("Passwords don't match.")
+        return
+      }
       firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
@@ -34,8 +35,7 @@ export const SignupStudentScreen = ({ navigation, route }) => {
               .doc(uid)
               .set(data)
               .then(() => {
-                navigation.navigate('Home')
-                  // navigation.navigate('Home', {user: data})
+                  navigation.navigate('Home', {user: data})
               })
           .catch((error) => {
               alert(error)
@@ -67,7 +67,13 @@ export const SignupStudentScreen = ({ navigation, route }) => {
         placeholder='Password'
         onChangeText={(text) => setPassword(text)}
         value = {password}/>    
-      <Text>Interest</Text>
+      <Text>Confirm Password</Text>
+      <TextInput 
+        style = {ContainerStyles.input}
+        placeholder='Confirm Password'
+        onChangeText={(text) => setConfirmPassword(text)}
+        value = {confirmPassword}/>    
+      {/* <Text>Interest</Text>
       <TextInput 
         style = {ContainerStyles.input}
         placeholder='Interest'
@@ -80,7 +86,7 @@ export const SignupStudentScreen = ({ navigation, route }) => {
         onChangeText={(text) => setFunFact(text)}
         value = {funFact}/>
       <Text>Social Preference</Text>
-      <TextInput style = {ContainerStyles.input}>Social Preference</TextInput>
+      <TextInput style = {ContainerStyles.input}>Social Preference</TextInput> */}
       <Button title = "Submit" onPress = {() => onRegisterPress()}></Button>
       </View>  
       );
