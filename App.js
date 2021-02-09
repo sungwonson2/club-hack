@@ -28,6 +28,9 @@ const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
  
 const HomeTabs = () => {
+  navigationOptions: {
+    headerleft = null;
+  }
   return (
     <Tab.Navigator>
       <Tab.Screen name="Home" component={HomeScreen} />

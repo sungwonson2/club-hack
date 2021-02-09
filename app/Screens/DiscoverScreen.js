@@ -1,38 +1,44 @@
-import React from 'react';
-import {Text, ScrollView, TouchableOpacity} from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import React, {Component} from 'react';
+import {Text, ScrollView, TouchableOpacity, View, FlatList} from 'react-native';
+import {SearchBar, } from 'react-native-elements';
 
 import {ContainerStyles, TextStyles} from '../Styles.js'
 
-export const DiscoverScreen = ({ navigation, route }) => {
-    return (  
-      <ScrollView contentContainerStyle = {{flexGrow: 1, alignItems: 'center'}}>
-      {/* Need to change search bar */}
-      <SearchBar     
-      lightTheme
-      containerStyle={{backgroundColor: 'white', borderWidth: 1, borderRadius: 5}}
-      placeholder={'Type Here...'}/>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Alpha Fund</Text>
-        <Text>Alpha Fund is a bla bla bla</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      </ScrollView>
-    );
-  };
+import {firebase, db} from '../FirebaseConfig'
+
+export class DiscoverScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state={ list:[],} 
+  }
   
+  componentDidMount(){
+    db.ref('clubs').on('value', (snapshot) =>{
+      var li = []
+      snapshot.forEach((child)=>{
+        li.push({
+          key: child.key,
+          overview: child.val().overview,
+        })
+      })
+    this.setState({list:li})
+  })
+
+  }
+  render(){
+    return(
+      <View style={{flex: 1}}>
+        <FlatList 
+          contentContainerStyle={{ paddingBottom: 1000}}
+            data={this.state.list}
+            keyExtractor={(item)=>item.key}
+            renderItem={({item})=>{
+              return(
+                  <TouchableOpacity style={ContainerStyles.club} onPress = {() => this.props.navigation.navigate('Club', {name: item.key})}>
+                    <Text>{item.key}</Text>
+                    <Text>{item.overview}</Text>
+                  </TouchableOpacity>)
+            }}/>
+      </View>
+    )}
+   }

@@ -3,7 +3,7 @@ import {Text, View, Button, TextInput} from 'react-native';
 
 import {ContainerStyles, TextStyles} from '../Styles.js'
 
-import {firebase} from '../FirebaseConfig'
+import {firebase, db} from '../FirebaseConfig'
 
 export const SignupStudentScreen = ({ navigation, route }) => {
     const [name, setName] = useState('')
@@ -12,8 +12,6 @@ export const SignupStudentScreen = ({ navigation, route }) => {
     const [confirmPassword, setConfirmPassword] = useState('')
     const [interest, setInterest] = useState('')
     const [funFact, setFunFact] = useState('')
-
-    // const profileRef = firebase.firestore().collection('profiles')
 
     const onRegisterPress = () => {
       if (password !== confirmPassword) {
@@ -24,22 +22,22 @@ export const SignupStudentScreen = ({ navigation, route }) => {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
-            const uid = response.user.uid
-            const data = {
-                id: uid,
-                email,
-                fullName,
-            };
-            const usersRef = firebase.firestore().collection('users')
-            usersRef
-              .doc(uid)
-              .set(data)
-              .then(() => {
-                  navigation.navigate('Home', {user: data})
-              })
-          .catch((error) => {
-              alert(error)
-          });
+            // const uid = response.user.uid
+            // const data = {
+            //     id: uid,
+            //     email,
+            //     name,
+            // };
+            // const usersRef = firebase.firestore().collection('users')
+            // usersRef
+            //   .doc(uid)
+            //   .set(data)
+            //   .then(() => {
+            // navigation.navigate('Home', {user: data})
+              // })
+          // .catch((error) => {
+          //     alert(error)
+          // });
         })
         .catch((error) => {
             alert(error)
