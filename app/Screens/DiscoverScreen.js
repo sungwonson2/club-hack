@@ -28,6 +28,7 @@ export class DiscoverScreen extends Component {
   render(){
     return(
       <View style={{flex: 1}}>
+        <Text style = {TextStyles.header}>Discover</Text>
         <FlatList 
           contentContainerStyle={{ paddingBottom: 1000}}
             data={this.state.list}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useReducer } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,7 +8,6 @@ import {WelcomeScreen} from './app/Screens/WelcomeScreen'
 import {LoginScreen} from './app/Screens/LoginScreen'
 import {ForgotPasswordScreen} from './app/Screens/ForgotPasswordScreen'
 import {SignupStudentScreen} from './app/Screens/SignupStudentScreen'
-import {SignupClubMemberScreen} from './app/Screens/SignupClubMemberScreen'
 import {HomeScreen} from './app/Screens/HomeScreen'
 import {DiscoverScreen} from './app/Screens/DiscoverScreen'
 import {MessagingScreen} from './app/Screens/MessagingScreen'
@@ -27,17 +26,14 @@ const Stack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
  
-const HomeTabs = () => {
-  navigationOptions: {
-    headerleft = null;
-  }
+const HomeTabs = ({ navigation, route }) => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Discover" component={DiscoverScreen} />
-      <Tab.Screen name="Messaging" component={MessagingScreen} />
-      <Tab.Screen name="Schedule" component={ScheduleScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Home" component={HomeScreen}/>
+      <Tab.Screen name="Discover" component={DiscoverScreen}/>
+      <Tab.Screen name="Messaging" component={MessagingScreen}/>
+      <Tab.Screen name="Schedule" component={ScheduleScreen}/>
+      <Tab.Screen name="Profile" component={ProfileScreen}/>
     </Tab.Navigator>
   );
 };
@@ -58,10 +54,6 @@ export default function App() {
         <Stack.Screen
           name="SignupStudent"
           component={SignupStudentScreen}
-        />
-        <Stack.Screen
-          name="SignupClubMember"
-          component={SignupClubMemberScreen}
         />
         <Stack.Screen
           name="ForgotPassword"

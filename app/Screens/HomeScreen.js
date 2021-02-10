@@ -1,36 +1,45 @@
-import React from 'react';
-import {Text, ScrollView, TouchableOpacity} from 'react-native';
+import React, {Component} from 'react';
+import {Text, ScrollView, TouchableOpacity, View, FlatList} from 'react-native';
+import {SearchBar, } from 'react-native-elements';
 
 import {ContainerStyles, TextStyles} from '../Styles.js'
 
-export const HomeScreen = ({ navigation, route }) => {
-    return (    
-      <ScrollView contentContainerStyle = {{flexGrow: 1, alignItems: 'center'}}>
-      <Text style = {TextStyles.header}>Your Matched Clubs(DOESNT WORK YET)</Text>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      <TouchableOpacity style={ContainerStyles.club} onPress = {() => navigation.navigate('Club')}>
-        <Text>Cornell Finance Club</Text>
-        <Text>Cornell Finance Club is a bla bla bla</Text> 
-      </TouchableOpacity>
-      </ScrollView>  
-      );
-  };
+import {firebase, db} from '../FirebaseConfig'
+
+export class HomeScreen extends Component {
+  constructor(props){
+    super(props);
+    this.state={ list:[],} 
+  }
+  
+  componentDidMount(){
+    var search = ('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs')
+    db.ref(search).on('value', (snapshot) =>{
+      var li = []
+      snapshot.forEach((child)=>{
+        li.push({
+          key: child.key,
+          name: child.val(),
+        })
+      })
+    this.setState({list:li})
+  })
+
+  }
+  render(){
+    return(
+      <View style={{flex: 1}}>
+        <Text style = {TextStyles.header}>Home</Text>
+        <FlatList 
+          contentContainerStyle={{ paddingBottom: 1000}}
+            data={this.state.list}
+            keyExtractor={(item)=>item.key}
+            renderItem={({item})=>{
+              return(
+                  <TouchableOpacity style={ContainerStyles.club} onPress = {() => this.props.navigation.navigate('Club', {name: item.name})}>
+                    <Text>{item.name}</Text>
+                  </TouchableOpacity>)
+            }}/>
+      </View>
+    )}
+   }

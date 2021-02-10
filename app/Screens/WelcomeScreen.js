@@ -9,7 +9,6 @@ export const WelcomeScreen = ({ navigation }) => {
     <View style={ContainerStyles.container}>
     <Text style = {TextStyles.header}>Club Hack!</Text>
     <Button title = "Student" onPress = {() => navigation.navigate('SignupStudent')}></Button>
-    <Button title = "Club Member" onPress = {() => navigation.navigate('SignupClubMember')}></Button>
     <Text style = {TextStyles.underline}>OR</Text>
     <Button title = "Already a user?" onPress = {() => navigation.navigate('Login')}></Button>
     <StatusBar style="auto" />

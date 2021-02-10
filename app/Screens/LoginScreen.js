@@ -16,8 +16,6 @@ export const LoginScreen = ({ navigation, route }) => {
           .signInWithEmailAndPassword(email, password)
           .then((response) => {
               navigation.navigate('Home')
-
-              // const uid = response.user.uid
               // const usersRef = firebase.firestore().collection('users')
               // usersRef
               //     .doc(uid)

@@ -8,6 +8,7 @@ import {firebase, db} from '../FirebaseConfig'
 export const SignupStudentScreen = ({ navigation, route }) => {
     const [name, setName] = useState('')
     const [email, setEmail] = useState('')
+    const [school, setSchool] = useState('')
     const [password, setPassword] = useState('')
     const [confirmPassword, setConfirmPassword] = useState('')
     const [interest, setInterest] = useState('')
@@ -22,22 +23,24 @@ export const SignupStudentScreen = ({ navigation, route }) => {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then((response) => {
-            // const uid = response.user.uid
-            // const data = {
-            //     id: uid,
-            //     email,
-            //     name,
-            // };
-            // const usersRef = firebase.firestore().collection('users')
-            // usersRef
-            //   .doc(uid)
-            //   .set(data)
-            //   .then(() => {
-            // navigation.navigate('Home', {user: data})
-              // })
-          // .catch((error) => {
-          //     alert(error)
-          // });
+            var key = email.replace(/[^a-zA-Z0-9 ]/g, "")
+
+            var dir = '/users/'.concat(key);
+
+            firebase.auth().currentUser.updateProfile({
+              displayName: key
+            })
+
+            db.ref(dir).set({
+              name: name,
+              email: email,
+              school: school,
+            })
+
+            navigation.navigate('Home')
+          .catch((error) => {
+              alert(error)
+          });
         })
         .catch((error) => {
             alert(error)
@@ -58,7 +61,13 @@ export const SignupStudentScreen = ({ navigation, route }) => {
         style = {ContainerStyles.input}
         placeholder='Email'
         onChangeText={(text) => setEmail(text)}
-        value = {email}/>      
+        value = {email}/>
+      <Text>School</Text>
+      <TextInput 
+        style = {ContainerStyles.input}
+        placeholder='School'
+        onChangeText={(text) => setSchool(text)}
+        value = {school}/>           
       <Text>Password</Text>
       <TextInput 
         style = {ContainerStyles.input}
