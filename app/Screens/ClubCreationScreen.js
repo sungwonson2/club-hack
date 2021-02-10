@@ -22,6 +22,14 @@ export const ClubCreationScreen = ({ navigation, route }) => {
         culture: culture.toLocaleString(),
       })
 
+      var dir = (('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs')).concat(this.state.club.key)
+
+      db.ref(dir).set({
+        name: this.state.club.key,
+        admin: true,
+        member: true
+      })
+
       navigation.navigate('Club', {name: name})
     }
 

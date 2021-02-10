@@ -46,6 +46,7 @@ export const LoginScreen = ({ navigation, route }) => {
         value = {email}/>      
       <TextInput 
         style = {ContainerStyles.input}
+        secureTextEntry={true}
         placeholder='Password'
         onChangeText={(text) => setPassword(text)}
         value = {password}/>    

@@ -19,7 +19,7 @@ export class HomeScreen extends Component {
       snapshot.forEach((child)=>{
         li.push({
           key: child.key,
-          name: child.val(),
+          name: child.val().name,
         })
       })
     this.setState({list:li})
@@ -31,7 +31,7 @@ export class HomeScreen extends Component {
       <View style={{flex: 1}}>
         <Text style = {TextStyles.header}>Home</Text>
         <FlatList 
-          contentContainerStyle={{ paddingBottom: 1000}}
+          contentContainerStyle={{ paddingBottom: 100}}
             data={this.state.list}
             keyExtractor={(item)=>item.key}
             renderItem={({item})=>{

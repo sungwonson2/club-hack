@@ -8,13 +8,15 @@ import {firebase, db} from '../FirebaseConfig'
 export class ClubScreen extends Component {
   constructor(props){
     super(props);
-    this.state={club: []} 
+    this.state={club: []}
+    this.connected = "Connect" 
   }
   
 
   componentDidMount(){
     var search = 'clubs/'.concat(this.props.route.params.name)
     db.ref(search).on('value', (snapshot) =>{
+      console.log(snapshot.key)
       var Club = {
           key: snapshot.key,
           culture: snapshot.val().culture,
@@ -24,12 +26,37 @@ export class ClubScreen extends Component {
         }
       this.setState({club: Club})
     })
+
+    var search = ('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs')
+
+    db.ref(search).once("value",snapshot => {
+      if (snapshot.hasChild(this.props.route.params.name)){
+        this.connected = "Disconnect"
+      }
+      else {
+        this.connected = "Connect"
+      }
+  });
   }
 
   connect() {
-    var dir = ('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs')
+    console.log(this.connected)
+    var dir = (('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs/')).concat(this.state.club.key)
+    if (this.connected == "Connect") {
+      this._isMounted = true;
+      db.ref(dir).set({
+        name: this.state.club.key,
+        admin: false,
+        member: true
+      })
+      alert("Connected with " + this.state.club.key)
+    }
 
-    db.ref(dir).push(this.state.club.key)
+    else if (this.connected == "Disconnect") {
+      this._isMounted = false;
+      db.ref(dir).remove()
+      alert("Disconnected with " + this.state.club.key)
+    }
   }
 
   render(){
@@ -45,7 +72,7 @@ export class ClubScreen extends Component {
           <Text style = {TextStyles.smallHeader}>Culture</Text>
           <Text style = {TextStyles.normalText}> {this.state.club.culture} </Text>
           <Text style = {TextStyles.smallHeader}>Similar Clubs</Text>
-          <Button title = "Connect" onPress = {() => this.connect()}/>
+          <Button title = {this.connected} onPress = {() => this.connect()}/>
           <Button title = "Similar Club1" onPress = {() => this.props.navigation.navigate('Club')}/>
           <Button title = "Members" onPress = {() => this.props.navigation.navigate('Members')}/>
           <Button title = "Chat" onPress = {() => this.props.navigation.navigate('Chat')}/>
