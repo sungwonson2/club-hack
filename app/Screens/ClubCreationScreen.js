@@ -22,10 +22,18 @@ export const ClubCreationScreen = ({ navigation, route }) => {
         culture: culture.toLocaleString(),
       })
 
-      var dir = (('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs')).concat(this.state.club.key)
+      var dir = (dir.concat('/members/')).concat(firebase.auth().currentUser.displayName)
+      
+      db.ref(dir).set({
+        name: firebase.auth().currentUser.displayName,
+        admin: true,
+        member: true
+      })
+
+      var dir = 'users/'.concat(firebase.auth().currentUser.displayName).concat('/clubs/').concat(name)
 
       db.ref(dir).set({
-        name: this.state.club.key,
+        name: name,
         admin: true,
         member: true
       })

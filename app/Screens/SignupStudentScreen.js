@@ -71,12 +71,14 @@ export const SignupStudentScreen = ({ navigation, route }) => {
       <Text>Password</Text>
       <TextInput 
         style = {ContainerStyles.input}
+        secureTextEntry={true}
         placeholder='Password'
         onChangeText={(text) => setPassword(text)}
         value = {password}/>    
       <Text>Confirm Password</Text>
       <TextInput 
         style = {ContainerStyles.input}
+        secureTextEntry={true}
         placeholder='Confirm Password'
         onChangeText={(text) => setConfirmPassword(text)}
         value = {confirmPassword}/>    

@@ -7,7 +7,7 @@ export const MessagingScreen = ({ navigation, route }) => {
     return (    
       <ScrollView contentContainerStyle = {{flexGrow: 1, alignItems: 'center'}}>
       <Text style = {TextStyles.header}>Messaging</Text>
-      <TouchableOpacity style={ContainerStyles.messages} onPress = {() => navigation.navigate('Chat')}>
+      <TouchableOpacity style={ContainerStyles.messages} onPress = {() => navigation.navigate('Chat', {name: 'pantheraventuresswegmailcom'})}>
         <Text style = {TextStyles.messagePersonText}>Richard Cho</Text>
         <Text style = {TextStyles.messageText}>Richard Cho is ugly</Text>
       </TouchableOpacity>  

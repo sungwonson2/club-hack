@@ -16,7 +16,6 @@ export class ClubScreen extends Component {
   componentDidMount(){
     var search = 'clubs/'.concat(this.props.route.params.name)
     db.ref(search).on('value', (snapshot) =>{
-      console.log(snapshot.key)
       var Club = {
           key: snapshot.key,
           culture: snapshot.val().culture,
@@ -27,7 +26,7 @@ export class ClubScreen extends Component {
       this.setState({club: Club})
     })
 
-    var search = ('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs')
+    var search = 'users/'.concat(firebase.auth().currentUser.displayName).concat('/clubs')
 
     db.ref(search).once("value",snapshot => {
       if (snapshot.hasChild(this.props.route.params.name)){
@@ -40,8 +39,7 @@ export class ClubScreen extends Component {
   }
 
   connect() {
-    console.log(this.connected)
-    var dir = (('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs/')).concat(this.state.club.key)
+    var dir = 'users/'.concat(firebase.auth().currentUser.displayName).concat('/clubs/').concat(this.state.club.key)
     if (this.connected == "Connect") {
       this._isMounted = true;
       db.ref(dir).set({
@@ -49,11 +47,23 @@ export class ClubScreen extends Component {
         admin: false,
         member: true
       })
+
+      var dir = '/clubs/'.concat(this.state.club.key).concat('/members/').concat(firebase.auth().currentUser.displayName)
+      
+      db.ref(dir).set({
+        name: firebase.auth().currentUser.displayName,
+        admin: false,
+        member: true
+      })
+
       alert("Connected with " + this.state.club.key)
     }
 
     else if (this.connected == "Disconnect") {
       this._isMounted = false;
+      db.ref(dir).remove()
+
+      var dir = '/clubs/'.concat(this.state.club.key).concat('/members/').concat(firebase.auth().currentUser.displayName)
       db.ref(dir).remove()
       alert("Disconnected with " + this.state.club.key)
     }
@@ -74,7 +84,7 @@ export class ClubScreen extends Component {
           <Text style = {TextStyles.smallHeader}>Similar Clubs</Text>
           <Button title = {this.connected} onPress = {() => this.connect()}/>
           <Button title = "Similar Club1" onPress = {() => this.props.navigation.navigate('Club')}/>
-          <Button title = "Members" onPress = {() => this.props.navigation.navigate('Members')}/>
+          <Button title = "Members" onPress = {() => this.props.navigation.replace('Members', {club: this.state.club.key})}/>
           <Button title = "Chat" onPress = {() => this.props.navigation.navigate('Chat')}/>
       </View>
     )}

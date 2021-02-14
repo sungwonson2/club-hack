@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, View, Button, Image, ScrollView} from 'react-native';
+import {Text, View, Button, Image, ScrollView, FlatList} from 'react-native';
 
 import {ContainerStyles, TextStyles} from '../Styles.js'
 
@@ -8,30 +8,41 @@ import {firebase, db} from '../FirebaseConfig'
 export class ProfileScreen extends Component {
   constructor(props){
     super(props);
-    this.state={profile: []} 
+    this.state={profile: [], clubs: []} 
     this.user = firebase.auth().currentUser;
   }
   
 
   componentDidMount(){
-    var search = 'users/'.concat(firebase.auth().currentUser.displayName)
-    db.ref(search).on('value', (snapshot) =>{
+    var dir = 'users/'.concat(firebase.auth().currentUser.displayName)
+    db.ref(dir).on('value', (snapshot) =>{
       var Profile = {
           name: snapshot.val().name,
           email: snapshot.val().email,
           school: snapshot.val().school,
-          clubs: snapshot.val().clubs,
+          // clubs: snapshot.val().clubs,
           interests: snapshot.val().interests,
           funFact: snapshot.val().funFact,
           socialPreference: snapshot.val().socialPreference
         }
       this.setState({profile: Profile})
     })
+
+    var dir = 'users/'.concat(firebase.auth().currentUser.displayName).concat('/clubs')
+    db.ref(dir).on('value', (snapshot) =>{
+      var li = []
+      snapshot.forEach((child)=>{
+        li.push({
+          key: child.key,
+        })
+      })
+      this.setState({clubs:li})
+    })
   }
 
   render(){
     return (    
-      <ScrollView contentContainerStyle={{ paddingBottom: 1000, alignItems: 'center'}}>
+      <View style = {ContainerStyles.container}>
         <Text style = {TextStyles.header}>Profile</Text>
         <Image style = {{width: 150, height: 150}}source={require('../assets/testUserProfile1.jpg')}/>
         <Text style = {TextStyles.smallHeader}>Name</Text>
@@ -47,10 +58,16 @@ export class ProfileScreen extends Component {
         <Text style = {TextStyles.smallHeader}>Social Preference</Text>
         <Text style = {TextStyles.normalText}>{this.state.profile.socialPreference}</Text>
         <Text style = {TextStyles.smallHeader}>Clubs</Text>
-        <Text style = {TextStyles.normalText}>{this.state.profile.clubs}</Text>
-        {/* <Button title = "Engineering Club" onPress = {() => navigation.navigate('Club')}/> */}
+        <FlatList 
+          contentContainerStyle={{ paddingBottom: 1000}}
+          data={this.state.clubs}
+          keyExtractor={(item)=>item.key}
+          renderItem={({item})=>{
+            return(
+                <Button title = {item.key} style={ContainerStyles.club} onPress = {() => this.props.navigation.navigate('Club', {name: item.key})}/>
+            )}}/>
         <Button title = "Settings" onPress = {() => this.props.navigation.navigate('Settings')}/>
-      </ScrollView>  
+      </View>  
       );
   }
 }

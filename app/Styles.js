@@ -62,6 +62,10 @@ const ContainerStyles = StyleSheet.create({
     flexGrow: 1,
     width: Dimensions.get('window').width,
     },
+  datePicker: {
+    width: 200,
+    marginTop: 20,
+  }
 });
 
 export {TextStyles, ContainerStyles};

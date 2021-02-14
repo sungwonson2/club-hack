@@ -12,6 +12,9 @@ import {HomeScreen} from './app/Screens/HomeScreen'
 import {DiscoverScreen} from './app/Screens/DiscoverScreen'
 import {MessagingScreen} from './app/Screens/MessagingScreen'
 import {ScheduleScreen} from './app/Screens/ScheduleScreen'
+import {SchedulingScreen} from './app/Screens/SchedulingScreen'
+import {DayInfoScreen} from './app/Screens/DayInfoScreen'
+import {EventScreen} from './app/Screens/EventScreen'
 import {ChatScreen} from './app/Screens/ChatScreen'
 import {ProfileScreen} from './app/Screens/ProfileScreen'
 import {SettingsScreen} from './app/Screens/SettingScreen'
@@ -70,6 +73,18 @@ export default function App() {
         <Stack.Screen
           name="Club"
           component={ClubScreen}
+        />
+        <Stack.Screen
+          name="Scheduling"
+          component={SchedulingScreen}
+        />
+        <Stack.Screen
+          name="DayInfo"
+          component={DayInfoScreen}
+        />
+        <Stack.Screen
+          name="Event"
+          component={EventScreen}
         />
         <Stack.Screen
           name="ClubCreation"

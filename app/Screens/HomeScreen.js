@@ -13,7 +13,7 @@ export class HomeScreen extends Component {
   }
   
   componentDidMount(){
-    var search = ('users/'.concat(firebase.auth().currentUser.displayName)).concat('/clubs')
+    var search = 'users/'.concat(firebase.auth().currentUser.displayName).concat('/clubs')
     db.ref(search).on('value', (snapshot) =>{
       var li = []
       snapshot.forEach((child)=>{
