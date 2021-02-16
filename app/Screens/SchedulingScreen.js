@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Text, View, Button} from 'react-native';
+import {Text, View, Button, TextInput} from 'react-native';
 
 import {ContainerStyles, TextStyles} from '../Styles.js'
 
@@ -9,32 +9,44 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import {firebase, db} from '../FirebaseConfig'
 
 export const SchedulingScreen = ({navigation, route}) => {
-  console.log(route.params.day)
   const [date, setDate] = useState(new Date(1598051730000))
   const [activity, setActivity] = useState('')
+  const [username, setUsername] = useState('')
 
   const onAddToSchedulePress = (event, selectedDate) => {
-    var dir = '/users/'.concat(firebase.auth().currentUser.displayName).concat('/schedule/')
-      .concat(route.params.day.year).concat('/').concat(route.params.day.month);
-
     var event = {
       date: route.params.day.dateString,
       day: date.getDate(),
       hour: date.getHours(),
       minute: date.getMinutes(),
-      activity: activity
+      activity: activity,
+      participants: username
     }
 
+    var dir = '/users/'.concat(firebase.auth().currentUser.displayName).concat('/schedule/');
     db.ref(dir).push({
       date: route.params.day.dateString,
       day: date.getDate(),
       hour: date.getHours(),
       minute: date.getMinutes(),
-      activity: activity
+      activity: activity,
+      participants: username
+    })  
+    .then((snap) => {
+      const key = snap.key
+      var dir = '/users/'.concat(username).concat('/schedule/').concat(key);
+      db.ref(dir).set({
+        date: route.params.day.dateString,
+        day: date.getDate(),
+        hour: date.getHours(),
+        minute: date.getMinutes(),
+        activity: activity,
+        participants: firebase.auth().currentUser.displayName
+      })
+  
+      alert("Event Created")
+      navigation.replace('Event', {event: key})
     })
-
-    alert("Event Created")
-    navigation.replace('Event', {event: event})
   }
 
   const onChange = (event, selectedDate) => {
@@ -73,6 +85,13 @@ export const SchedulingScreen = ({navigation, route}) => {
           setActivity(item.value);
         }}
       />
+
+      <Text style = {TextStyles.normalText}>Other Event Participants</Text>
+      <TextInput 
+        style = {ContainerStyles.input}
+        placeholder='Username'
+        onChangeText={(text) => setUsername(text)}
+        value = {username}/>
 
       <Button title = "Add to Schedule!" onPress = {() => onAddToSchedulePress()}></Button>
     </View>

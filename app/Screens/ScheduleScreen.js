@@ -21,6 +21,45 @@ export class ScheduleScreen extends Component {
   }
 
   componentDidMount() {
+    var dir = '/users/'.concat(firebase.auth().currentUser.displayName).concat('/schedule/')
+    db.ref(dir).on('value', (snapshot) =>{
+      var li = {}
+      snapshot.forEach((child)=>{
+        if (child.val().activity == 'video') {
+          if (child.val().date in li) {
+            li[child.val().date]['dots'].push(video)
+          }
+          else {
+            li[child.val().date] = {dots: [video]};
+          }
+        }
+        else if (child.val().activity == 'coffee') {
+          if (child.val().date in li) {
+            li[child.val().date]['dots'].push(coffee)
+          }
+          else {
+            li[child.val().date] = {dots: [coffee]};
+          }
+        }
+        else if (child.val().activity == 'hiking') {
+          if (child.val().date in li) {
+            li[child.val().date]['dots'].push(hiking)
+          }
+          else {
+            li[child.val().date] = {dots: [hiking]};
+          }
+        }
+        else if (child.val().activity == 'lunch') {
+          if (child.val().date in li) {
+            li[child.val().date]['dots'].push(lunch)
+          }
+          else {
+            li[child.val().date] = {dots: [lunch]};
+          }
+        }
+      })
+    this.setState({dates:li})
+    })
   }
 
   render() {
@@ -34,6 +73,7 @@ export class ScheduleScreen extends Component {
         onDayPress={(day) => this.props.navigation.navigate('DayInfo', {day: day})}
         onDayLongPress={(day) => this.props.navigation.navigate('Scheduling', {day: day})}
         markedDates = {this.state.dates}
+        markingType={'multi-dot'}
       />
       </View>  
       );

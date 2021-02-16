@@ -23,16 +23,6 @@ export class ChatScreen extends Component {
     };
   }
 
-
-
-  // user() {
-  //   return {
-  //     displayName: this.props.route.params.name,
-  //     id: firebase.auth().currentUser.uid,
-  //     _id: firebase.auth().currentUser.uid,
-  //   };
-  // }
-
   componentDidMount() {
     firebaseSvc.refOn(message =>
       this.setState(previousState => ({
