@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, Component} from 'react';
 import {Text, View, Button, TextInput} from 'react-native';
 
 import {ContainerStyles, TextStyles} from '../Styles.js'
 
 import {firebase, db} from '../FirebaseConfig'
 
-export class ClubScreen extends Component {
+export class ProfileChangeScreen extends Component {
     constructor(props){
       super(props);
       this.state={name: "", email: "", school: "", interests: "", funFact: "", socialPreference: ""}
@@ -22,23 +22,26 @@ export class ClubScreen extends Component {
     componentDidMount(){
         var dir = 'users/'.concat(firebase.auth().currentUser.displayName)
         db.ref(dir).on('value', (snapshot) =>{
-          var Profile = {
-              name: snapshot.val().name,
-              email: snapshot.val().email,
-              school: snapshot.val().school,
-              // clubs: snapshot.val().clubs,
-              interests: snapshot.val().interests,
-              funFact: snapshot.val().funFact,
-              socialPreference: snapshot.val().socialPreference
-            }
-          this.setState({profile: Profile})
-      })
-  
+          this.setState({name: snapshot.val().name})
+          this.setState({email: snapshot.val().email})
+          this.setState({school: snapshot.val().school})
+          this.setState({interests: snapshot.val().interests})
+          this.setState({funFact: snapshot.val().funFact})
+          this.setState({socialPreference: snapshot.val().socialPreference})
+        })
       var search = 'users/'.concat(firebase.auth().currentUser.displayName).concat('/clubs');
     }
 
     onChangeProfilePress(){
-        var search = 'users/'
+        var dir = 'users/'.concat(firebase.auth().currentUser.displayName)
+        db.ref(dir).set({
+          name: this.state.name,
+          email: this.state.email,
+          school: this.state.school,
+          interests: this.state.interests,
+          funFact: this.state.funFact,
+          socialPreference: this.state.socialPreference,
+        })
     }
   
     render(){
@@ -50,33 +53,33 @@ export class ClubScreen extends Component {
           style = {ContainerStyles.input}
           placeholder='Name'
           onChangeText={(text) => setState({name: text})}
-          value = {name}/>
+          value = {this.state.name}/>
         <Text>Email</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Email'
           onChangeText={(text) => setState({email: text})}
-          value = {email}/>
+          value = {this.state.email}/>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='School'
           onChangeText={(text) => setState({school: text})}
-          value = {school}/>
+          value = {this.state.school}/>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Interests'
           onChangeText={(text) => setState({interests: text})}
-          value = {interests}/>
+          value = {this.state.interests}/>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Fun Fact'
           onChangeText={(text) => setState({funFact: text})}
-          value = {funFact}/>
+          value = {this.state.funFact}/>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='socialPreference'
           onChangeText={(text) => setState({socialPreference: text})}
-          value = {socialPreference}/>
+          value = {this.state.socialPreference}/>
         <Button title = "Edit Profile!" onPress = {() => onChangeProfilePress()}></Button>
         </View>
       )}
