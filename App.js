@@ -22,6 +22,7 @@ import {ClubScreen} from './app/Screens/ClubScreen'
 import {ClubCreationScreen} from './app/Screens/ClubCreationScreen'
 import {PersonScreen} from './app/Screens/PersonScreen'
 import {MembersScreen} from './app/Screens/MembersScreen'
+import {ProfileChangeScreen} from './app/Screens/ProfileChangeScreen'
 
 import {firebase} from './app/FirebaseConfig'
 
@@ -69,6 +70,10 @@ export default function App() {
         <Stack.Screen
           name="Settings"
           component={SettingsScreen}
+        />
+        <Stack.Screen
+          name="ProfileChange"
+          component={ProfileChangeScreen}
         />
         <Stack.Screen
           name="Club"
