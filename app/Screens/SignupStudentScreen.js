@@ -35,6 +35,9 @@ export const SignupStudentScreen = ({ navigation, route }) => {
               name: name,
               email: email,
               school: school,
+              interests: "",
+              funFact: "",
+              socialPreference: "",
             })
 
             navigation.navigate('Home')

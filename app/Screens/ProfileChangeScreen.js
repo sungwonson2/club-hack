@@ -1,23 +1,18 @@
 import React, {useState, Component} from 'react';
-import {Text, View, Button, TextInput} from 'react-native';
+import {Text, View, ScrollView, Button, TextInput} from 'react-native';
 
 import {ContainerStyles, TextStyles} from '../Styles.js'
 
 import {firebase, db} from '../FirebaseConfig'
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 export class ProfileChangeScreen extends Component {
     constructor(props){
       super(props);
       this.state={name: "", email: "", school: "", interests: "", funFact: "", socialPreference: ""}
       this.connected = "Connect" 
-    //   const [name, setName] = useState('')
-    //   const [email, setEmail] = useState('')
-    //   const [school, setSchool] = useState('')
-    //   const [interests, setInterests] = useState('')
-    //   const [funFact, setFunFact] = useState('')
-    //   const [socialPreference, setSocialPreference] = useState('')
     }
-    
   
     componentDidMount(){
         var dir = 'users/'.concat(firebase.auth().currentUser.displayName)
@@ -34,7 +29,7 @@ export class ProfileChangeScreen extends Component {
 
     onChangeProfilePress(){
         var dir = 'users/'.concat(firebase.auth().currentUser.displayName)
-        db.ref(dir).set({
+        db.ref(dir).update({
           name: this.state.name,
           email: this.state.email,
           school: this.state.school,
@@ -42,45 +37,59 @@ export class ProfileChangeScreen extends Component {
           funFact: this.state.funFact,
           socialPreference: this.state.socialPreference,
         })
+        alert("Updated Profile!")
     }
   
     render(){
       return(
-        <View style={ContainerStyles.container}>
+        <ScrollView contentContainerStyle={ContainerStyles.container}>
         <Text style = {TextStyles.header}>Edit Profile</Text>
         <Text>Name</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Name'
-          onChangeText={(text) => setState({name: text})}
+          onChangeText={(text) => this.setState({name: text})}
           value = {this.state.name}/>
         <Text>Email</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Email'
-          onChangeText={(text) => setState({email: text})}
+          onChangeText={(text) => this.setState({email: text})}
           value = {this.state.email}/>
+        <Text>School</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='School'
-          onChangeText={(text) => setState({school: text})}
+          onChangeText={(text) => this.setState({school: text})}
           value = {this.state.school}/>
+        <Text>Interests</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Interests'
-          onChangeText={(text) => setState({interests: text})}
+          onChangeText={(text) => this.setState({interests: text})}
           value = {this.state.interests}/>
+        <Text>Fun Fact</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Fun Fact'
-          onChangeText={(text) => setState({funFact: text})}
+          onChangeText={(text) => this.setState({funFact: text})}
           value = {this.state.funFact}/>
-        <TextInput 
-          style = {ContainerStyles.input}
-          placeholder='socialPreference'
-          onChangeText={(text) => setState({socialPreference: text})}
-          value = {this.state.socialPreference}/>
-        <Button title = "Edit Profile!" onPress = {() => onChangeProfilePress()}></Button>
-        </View>
+        <Text>Social Preference</Text>
+        <DropDownPicker
+          items = {[
+            {label: '', value: ''},
+            {label: 'Online', value: 'Online'},
+            {label: 'In-Person', value: 'In-Person'},
+          ]}
+          defaultValue={this.state.socialPreference}
+          containerStyle={{height: 40, width: "80%"}}
+          itemStyle={{
+            justifyContent: 'flex-start'
+          }}
+          onChangeItem={(item) => this.setState({socialPreference: item.label}
+            )}
+        />
+        <Button title = "Edit Profile!" onPress = {() => this.onChangeProfilePress()}></Button>
+        </ScrollView>
       )}
   }
