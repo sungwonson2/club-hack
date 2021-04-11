@@ -60,21 +60,25 @@ export class ProfileChangeScreen extends Component {
           placeholder='Email'
           onChangeText={(text) => setState({email: text})}
           value = {this.state.email}/>
+        <Text>School</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='School'
           onChangeText={(text) => setState({school: text})}
           value = {this.state.school}/>
+        <Text>Interests</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Interests'
           onChangeText={(text) => setState({interests: text})}
           value = {this.state.interests}/>
+        <Text>Fun Fact</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='Fun Fact'
           onChangeText={(text) => setState({funFact: text})}
           value = {this.state.funFact}/>
+        <Text>Social Preference</Text>
         <TextInput 
           style = {ContainerStyles.input}
           placeholder='socialPreference'

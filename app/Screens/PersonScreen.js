@@ -64,7 +64,7 @@ export class PersonScreen extends Component {
             return(
                 <Button title = {item.key} style={ContainerStyles.club} onPress = {() => this.props.navigation.navigate('Club', {name: item.key})}/>
             )}}/>
-        <Button title = "Chat" onPress = {() => this.props.navigation.navigate('Chat')}/>
+        <Button title = "Chat" onPress = {() => this.props.navigation.navigate('Chat', {name: this.props.route.params.name})}/>
         <Button title = "Schedule" onPress = {() => this.props.navigation.navigate('Schedule')}/>
       </View>  
       );

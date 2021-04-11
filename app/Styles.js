@@ -47,9 +47,10 @@ const ContainerStyles = StyleSheet.create({
   },
   messages: {
     width: '100%',
-    height: '15%',
+    height: '200%',
     justifyContent: 'center', 
     borderTopWidth: 2,
+    borderBottomWidth: 2,
   },
   input: {
     margin: 15,
